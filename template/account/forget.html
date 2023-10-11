@@ -1,0 +1,32 @@
+{% extends 'home/base.html' %}
+{% load static %}
+{% block title %} techBazar {% endblock %}
+{% block body %}
+
+
+{% if messages %}
+{% for message in messages %}
+<h2 style="color:red; text-align: center;" class="{{ message.tags }}">{{ message }}</h2>
+{% endfor %}
+{% endif %}
+
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-xs-12 col-lg-6 mb-30" style="margin: auto;">
+        <!-- Login Form s-->
+        <form action=""  method="POST">
+            {% csrf_token %}
+            <div class="login-form">
+                <h4 class="login-title">Forget Password</h4>
+                <div class="row">
+                    <div class="col-md-12 col-12 mb-20">
+                        <label>Email</label>
+                        <input class="mb-0" type="email" name="email" placeholder="email" required>
+                    </div>
+                    <div class="col-md-12">
+                        <button class="register-button mt-0">Send Otp</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    {% endblock body %}

@@ -1,0 +1,67 @@
+{% extends 'home/base.html' %}
+{% load static %}
+{% block title %} Forget Pass {% endblock %}
+{% block body %}
+<div class="breadcrumb-area">
+    <div class="container">
+        <div class="breadcrumb-content">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li class="active"> Forget Password </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- Li's Breadcrumb Area End Here -->
+<!-- Begin Login Content Area -->
+<br>
+<br>
+<div class="page-section mb-60">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-sm-12 col-md-12 col-lg-6 col-xs-12" style="margin:auto;">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="login-form">
+                        {% if messages %}
+                            <ul class="messages">
+                                {% for message in messages %}
+                                <li style="color:red;" class="{{ message.tags }}">{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        <h4 class="login-title">Forget Password</h4>
+                        {% if user.fast_name %}
+                        <h4>user is : {{user.fast_name}}</h4>
+                        {% endif %}
+                        <div class="row">
+                            <div class="col-md-12 mb-20">
+                                <label>Email Address*</label>
+                                <input class="mb-0" type="email" name="email" placeholder="Email Address">
+                            </div>
+                            
+                            <div class="col-12 mb-20">
+                                <label>OTP</label>
+                                <input class="mb-0" type="number" name="otp" placeholder="OTP">
+                            </div>
+                            <div class="col-12 mb-20">
+                                <label>new Password</label>
+                                <input class="mb-0" type="password" name="pass" placeholder="Password">
+                            </div>
+                            <div class="col-12 mb-20">
+                                <label>confrom Password</label>
+                                <input class="mb-0" type="password" name="pass1" placeholder="Password">
+                            </div>
+                            
+                            <div class="col-12">
+                                <button type="submit" class="register-button mt-0">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
