@@ -21,16 +21,15 @@
         <div class="row">
 
             <div class="col-sm-12 col-md-12 col-lg-6 col-xs-12" style="margin:auto;">
+                {% if messages %}
+                {% for message in messages %}
+                    <h2 style="color:red; text-align: center;" class="{{ message.tags }}">{{ message }}</h2>
+                {% endfor %}
+                {% endif %}
                 <form method="POST">
                     {% csrf_token %}
                     <div class="login-form">
-                        {% if messages %}
-                            <ul class="messages">
-                                {% for message in messages %}
-                                <li style="color:red;" class="{{ message.tags }}">{{ message }}</li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
+                        
                         <h4 class="login-title">Forget Password</h4>
                         {% if user.fast_name %}
                         <h4>user is : {{user.fast_name}}</h4>

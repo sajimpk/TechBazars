@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User , auth
 import random
 from .models import *
+from cart.models import *
 from django.conf import settings
 from django.core.mail import send_mail
 from django.contrib.auth import update_session_auth_hash
@@ -18,10 +19,10 @@ def login(request):
         user = auth.authenticate(username=username,password = pasword)
         if user:
             auth.login(request,user)
-            return redirect('home')
+            return redirect(request.META['HTTP_REFERER'])
         else:
             messages.success(request, "User not found !, Please singup fast")
-            return redirect('login')
+            return redirect(request.META['HTTP_REFERER'])
  
     return render(request,'account/log_reg.html')
 
@@ -73,23 +74,33 @@ def singup(request):
 
 def logout(request):
     auth.logout(request)
-    return redirect('login')
+    return redirect(request.META['HTTP_REFERER'])
+ 
 
 def forget(request):
-    otp = random.randint(1111,9999)
-    if request.method=='POST':
-         email = request.POST.get('email')
-        #  send_mail_registration(email, otp)
-         user = User.objects.get(email=email)
-         if Profile_otp.objects.filter(user = user).exists():
-             profile = Profile_otp.objects.get(user =user)
-             profile.delete()
-         if user:
-             profile = Profile_otp(user=user,otp=otp)
-             profile.save()
-         return redirect('verify_otp')
+    otp = random.randint(0000, 9999)
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        try:
+            if email:
+                send_mail_registration(email, otp)
+                user = User.objects.get(email=email)
+                if user:
+                    try:
+                        prof = Profile_otp.objects.get(user=user)
+                        if prof:
+                            prof.otp = otp
+                            prof.save()
+                            return redirect('verify_otp')
+                    except:
+                        prof = Profile_otp.objects.create(user=user, otp=otp)
+                        prof.save()
+                        return redirect('verify_otp')
+        except:
+            messages.warning(request, "User Not Found.")
+            return redirect('forget')
 
-    return render(request,'account/forget.html')
+    return render(request, 'account/forget.html')
 
 def verify_otp(request):
     try:
@@ -116,7 +127,7 @@ def verify_otp(request):
             else:
                 messages.warning(request, "confrom password not match.")
     except Exception as e :
-        messages.warning(request, e)
+        messages.warning(request, "User not found")
     return render(request,'account/verify_otp.html',locals())
 
 def send_mail_registration(email, otp):
@@ -125,3 +136,22 @@ def send_mail_registration(email, otp):
     email_from = settings.EMAIL_HOST_USER
     recipient_list = [email]
     send_mail(subject, message, email_from, recipient_list)
+
+# chack out funtions 
+
+def chackout_ORDER(request):
+    user =request.user
+    if user.is_authenticated:
+        wishlist_list = len(wishlist.objects.filter(user=user))
+        crt_list = len(cart.objects.filter(user=user))
+        product = cart.objects.filter(user=user)
+        
+        total = 0
+        for i in product:
+            total += i.product.new_price*i.quantity
+            if i.product.quantity == 0:
+                i.quantity=0
+                i.save()
+        wishlist_show = wishlist.objects.filter(user=user)
+    
+    return render(request,'account/checkout.html',locals())

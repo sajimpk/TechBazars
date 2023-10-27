@@ -1,0 +1,90 @@
+{% extends 'home/base.html' %}
+{% load static %}
+{% block title %} SpiceMartBD {% endblock %}
+{% block body %}
+
+<div class="Shopping-cart-area pt-60 pb-60">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <form action="#" method="post">
+                    {% csrf_token %}
+                    <div class="table-content table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="li-product-remove">remove</th>
+                                    <th class="li-product-thumbnail">images</th>
+                                    <th class="cart-product-name">Product</th>
+                                    <th class="li-product-price">Unit Price</th>
+                                    <th class="li-product-quantity">Quantity</th>
+                                    <th class="li-product-subtotal">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in pro  %}
+
+                                <tr>
+                                    <td class="li-product-remove"><a href="{% url 'delete_crt' i.id %}"><i class="fa fa-times"></i></a></td>
+                                    <td class="li-product-thumbnail"><a href="#"><img
+                                                src="{{i.product.image.url}}" alt="Li's Product Image" height="150px;"></a></td>
+                                    <td class="li-product-name"><a href="#">{{i.product.name}}</a></td>
+                                    <td class="li-product-price"><span class="amount">{{i.product.new_price}}</span></td>
+                                    <td class="quantity">
+                                        <label>Quantity</label>
+                                        
+                                            {% if i.product.quantity > 0 %}
+                                            <div class="cart-plus-minus">
+                                            <div class="cart-plus-minus">
+                                            <input class="cart-plus-minus-box"name="quantity" value="{{ i.quantity }}" type="text">
+                                            <a href="{% url 'crt_up' i.product.id %}"><div class="inc qtybutton"><i class="fa fa-angle-up"></i></div></a>
+                                            <div class="dec qtybutton"><a href="{% url 'crt_dw' i.product.id %}"><i class="fa fa-angle-down"></i></a></div>
+                                            {% else %}
+                                                <h6 class="add-cart active"><b>out of stock</b></h6>
+                                           
+                                            </div>
+                                            {% endif %}
+                                            
+                                    </td>
+                                    
+                                    <td class="product-subtotal"><span class="amount">{% widthratio i.product.new_price 1 i.quantity %} </span></td>
+                                    
+                                </tr>
+
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="coupon-all">
+                                <div class="coupon">
+                                    <input id="coupon_code" class="input-text" name="coupon_code" value=""
+                                        placeholder="Coupon code" type="text">
+                                    <input class="button" name="apply_coupon" value="Apply coupon" type="submit">
+                                </div>
+                                <div class="coupon2">
+                                    <a href=""><input class="button" name="update_cart" value="Update cart" type="submit"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5 ml-auto">
+                            <div class="cart-page-total">
+                                <h2>Cart totals</h2>
+                                <ul>
+                                    <li>Subtotal <span>{{total}} tk</span></li>
+                                    <li>Total <span>{{total}} tk</span></li>
+                                </ul>
+                                <a href="{% url 'chackout'%}">Proceed to checkout</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
