@@ -9,6 +9,7 @@ def product(request,id):
     user =request.user
     if user.is_authenticated:
         crt_list = len(cart.objects.filter(user=user))
+        wishlist_list = len(wishlist.objects.filter(user=user))
         product_total = cart.objects.filter(user=user)
         total = 0
         for i in product_total:
@@ -28,9 +29,28 @@ def shop(request):
             total += i.product.new_price*i.quantity
     return render(request,'product/shop.html',locals())
 
+def single_product(request,id):
+    prod = product_all.objects.get(id=id)
+    user =request.user
+    if user.is_authenticated:
+        crt_list = len(cart.objects.filter(user=user))
+        wishlist_list = len(wishlist.objects.filter(user=user))
+        pro = cart.objects.filter(user=user)
+        total = 0
+        for i in pro:
+            total += i.product.new_price*i.quantity
+    return render(request,'product/single-product.html',locals())
 
 
 def search(request):
+    user =request.user
+    if user.is_authenticated:
+        crt_list = len(cart.objects.filter(user=user))
+        wishlist_list = len(wishlist.objects.filter(user=user))
+        pro = cart.objects.filter(user=user)
+        total = 0
+        for i in pro:
+            total += i.product.new_price*i.quantity
     cate = category.objects.all()
     if request.method == 'GET':
         src = request.GET.get('search')

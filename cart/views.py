@@ -45,25 +45,22 @@ def View_crt(request):
                 i.save()
     return render(request,'cart/cart.html',locals())
 
-
-
-
 def crt_up(request, id):
-    prod = product_all.objects.get(id=id)
     user = request.user
-    if user.is_authenticated:
-        pro = cart.objects.filter(product=prod,user=user)
-        pro.quantity+=1
-        pro.save()
-        return redirect("home")
+    cart_item = cart.objects.get(id=id, user=user)
+    cart_item.quantity += 1
+    cart_item.save()
+    return redirect(request.META['HTTP_REFERER'])
+
 def crt_dw(request, id):
-    prod = product_all.objects.get(id=id)
     user = request.user
-    if user.is_authenticated:
-        pro = cart.objects.filter(product=prod,user=user)
-        pro.quantity-=1
-        pro.save()
-        return redirect("home")
+    cart_item = cart.objects.get(id=id, user=user)
+    cart_item.quantity -= 1
+    cart_item.save()
+    if cart_item.quantity<1:
+        cart_item.delete()
+        return redirect(request.META['HTTP_REFERER'])
+    return redirect(request.META['HTTP_REFERER'])
         
         
 # start wishlist from heare

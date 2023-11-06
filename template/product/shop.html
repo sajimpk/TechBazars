@@ -63,7 +63,9 @@
                             <div class="product-area shop-product-area">
 
                                 <div class="row">
+                                    {% if prod %}
                                     {% for i in prod %}
+                                    
                                     <div class="col-lg-4 col-md-4 col-sm-6 mt-40">
                                         <!-- single-product-wrap start -->
                                         <div class="single-product-wrap">
@@ -113,6 +115,9 @@
                                         <!-- single-product-wrap end -->
                                     </div>
                                 {% endfor %}
+                                {% else %}
+                                    <h1 style="margin-top: 15px; text-align: center; color: brown;">Product Not Found</h1>
+                                {% endif %}
                                 </div>
 
                             </div>

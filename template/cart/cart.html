@@ -37,8 +37,8 @@
                                             <div class="cart-plus-minus">
                                             <div class="cart-plus-minus">
                                             <input class="cart-plus-minus-box"name="quantity" value="{{ i.quantity }}" type="text">
-                                            <a href="{% url 'crt_up' i.product.id %}"><div class="inc qtybutton"><i class="fa fa-angle-up"></i></div></a>
-                                            <div class="dec qtybutton"><a href="{% url 'crt_dw' i.product.id %}"><i class="fa fa-angle-down"></i></a></div>
+                                            <a href="{% url 'crt_up' i.id %}"><div class="inc qtybutton"><i class="fa fa-angle-up"></i></div></a>
+                                            <div class="dec qtybutton"><a href="{% url 'crt_dw' i.id %}"><i class="fa fa-angle-down"></i></a></div>
                                             {% else %}
                                                 <h6 class="add-cart active"><b>out of stock</b></h6>
                                            
